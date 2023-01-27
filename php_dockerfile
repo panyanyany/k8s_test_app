@@ -1,0 +1,7 @@
+from php:5.6
+
+COPY /app /app
+
+WORKDIR /app
+
+CMD php -S 0.0.0.0:9000

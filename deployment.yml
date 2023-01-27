@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: frontend
+    name: frontend
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+        spec:
+            containers:
+                - image: localhost:5000/k8s_c_app:v1
+                  imagePullPolicy: IfNotPresent
+                  name: frontend
+                  ports:
+                      - containerPort: 9000
+                  env:
+                      - name: NG_POD_IP
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: status.podIP #Pod IP
+                      - name: NG_POD_NAME
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: metadata.name # Pod name
+                      - name: NG_NODE_NAME
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: spec.nodeName # 节点名称
+                      - name: NG_NODE_IP
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: status.hostIP # 节点IP
+                      - name: NG_UID
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: metadata.uid # 唯一标识
+                      - name: NG_APP_NAME
+                        valueFrom:
+                            fieldRef:
+                                fieldPath: metadata.labels['app'] # 获取labels信息

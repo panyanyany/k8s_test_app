@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    # build: 
+    #   context: .
+    #   dockerfile: php_dockerfile
+    image: k8s_c_app:v1
+    ports:
+     - "9200:9000"
+    environment:
+        REDIS_PASSWORD: password123
